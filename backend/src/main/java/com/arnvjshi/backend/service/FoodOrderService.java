@@ -39,6 +39,7 @@ public class FoodOrderService {
         this.menuItemRepository = menuItemRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<FoodOrderResponse> listOrders(String username, boolean admin) {
         List<FoodOrder> orders = admin
                 ? foodOrderRepository.findAllByOrderByCreatedAtDesc()
@@ -61,6 +62,7 @@ public class FoodOrderService {
         order.setCreatedBy(createdBy);
 
         BigDecimal total = BigDecimal.ZERO;
+        order.setTotalAmount(total);
         FoodOrder savedOrder = foodOrderRepository.save(order);
 
         for (FoodOrderItemRequest itemRequest : request.items()) {
